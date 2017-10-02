@@ -1,0 +1,32 @@
+select * from BTCH ;
+
+select distinct trim(btch.SUB_CATEGORY) SUB_CATEGORY, category from btch where category='Top 10 alerts for Provide' order by SUB_CATEGORY;
+
+-- Date part query
+select to_char(to_date(date_created,'mm/dd/yyyy'),'mm/dd') from btch where category='Top 10 alerts for Provide' and SUB_CATEGORY=' ACTIVATION_UNIDENTIFIED_ERROR_CODE' order by SUB_CATEGORY;
+
+-- individual sub cat
+select count rpt_count,DATE_CREATED  from btch where category='Top 10 alerts for Provide' and trim(SUB_CATEGORY)='Create logical ONT failed' order by SUB_CATEGORY;
+
+
+delete from btch where category='Top 10 alerts for Provide' and SUB_CATEGORY='Create logical ONT failed'
+
+select date_created,nvl(round(sum(headcount)),0) average from btch  where DATE_CREATED='02/11/2016' GROUP BY date_created ;
+
+select date_created,nvl(round(sum(headcount)),0) average from btch  where DATE_CREATED='04/26/2016' GROUP BY date_created
+
+--weekly
+select (select nvl(round(sum(headcount)/7),0)  from btch where id between ( select max(id)-6 from btch where trim(SUB_CATEGORY)='Activation Failed') and (select max(id) from btch where trim(SUB_CATEGORY)='Activation Failed') )weekly , (select  nvl(round(sum(headcount)/count(headcount)),0)  from btch where trim(SUB_CATEGORY)='Activation Failed') daily   from dual; 
+
+--daily
+select  round(sum(headcount)/count(headcount)) daily from btch where SUB_CATEGORY='     Activation Failed'
+
+--diff between weekly and daily
+
+select day_created day from btch where category='Top 10 alerts for Provide' and SUB_CATEGORY=' ACTIVATION_UNIDENTIFIED_ERROR_CODE' order by SUB_CATEGORY
+
+select nvl(round(sum(a.headcount)),0) average, DATE_CREATED from btch a where a.DATE_CREATED in('02/14/2016')  GROUP BY date_created order by DATE_CREATED desc
+
+
+
+
